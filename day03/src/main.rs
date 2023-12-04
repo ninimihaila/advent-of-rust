@@ -48,7 +48,7 @@ fn has_symbol(line: &str, (start, len): (usize, usize)) -> bool {
 // a part number is the number adjacent to a "symbol"
 // a symbol is a character that is not a . or a number
 fn part_numbers(lines: &str, line_number: usize) -> Vec<u32> {
-    let lines = lines.lines().collect::<Vec<_>>();
+    let lines = lines.trim().lines().collect::<Vec<_>>();
     let mut part_numbers: Vec<u32> = Vec::new();
 
     let line = lines[line_number].trim();
@@ -66,8 +66,8 @@ fn part_numbers(lines: &str, line_number: usize) -> Vec<u32> {
             Some(&labv) => {
                 if has_symbol(labv, (start, len)) {
                     part_numbers.push(line[start..start + len].parse::<u32>().unwrap());
+                    continue;
                 }
-                continue;
             }
             None => {}
         }
@@ -76,8 +76,8 @@ fn part_numbers(lines: &str, line_number: usize) -> Vec<u32> {
             Some(&lbel) => {
                 if has_symbol(lbel, (start, len)) {
                     part_numbers.push(line[start..start + len].parse::<u32>().unwrap());
+                    continue;
                 }
-                continue;
             }
             None => {}
         }
@@ -92,6 +92,7 @@ fn part_numbers(lines: &str, line_number: usize) -> Vec<u32> {
 
 fn part1(lines: &str) -> u32 {
     return lines
+        .trim()
         .lines()
         .enumerate()
         .flat_map(|(index, _line)| part_numbers(lines, index))
@@ -180,11 +181,11 @@ mod tests {
         let expected = [
             vec![467],
             vec![],
-            vec![633],
+            vec![35, 633],
             vec![],
             vec![617],
             vec![],
-            vec![],
+            vec![592],
             vec![755],
             vec![],
             vec![664, 598],
